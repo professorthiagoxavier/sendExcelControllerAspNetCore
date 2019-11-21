@@ -1,0 +1,48 @@
+﻿
+@{
+    ViewData["Title"] = "ReadFile";
+}
+
+<h1>Carregar arquivo</h1>
+<form enctype="multipart/form-data"
+      method="post" id="frmArtigo">
+    <dl>
+        <dt>
+            <label for="FileUpload_FormFile">File</label>
+        </dt>
+        <dd>
+            <input id="FileUpload_FormFile" type="file" name="FileUpload.FormFile" />
+        </dd>
+    </dl>
+
+    <input class="btn" type="button" onclick="AJAXSubmit()" value="Upload" />
+
+    <div style="margin-top:15px">
+        <output name="result"></output>
+    </div>
+</form>
+<hr />
+<div id="resultado"></div>
+<script>
+    async function AJAXSubmit() {
+        var file1 = $("#FileUpload_FormFile")[0].files[0];
+        var formData = new FormData();
+        formData.append("files", file1);
+
+        $.ajax({
+            url: '@Url.Action("Import","Home")',
+            type: 'POST',
+            data: formData,
+            processData: false,  // tell jQuery not to process the data
+            contentType: false,  // tell jQuery not to set contentType
+            success: function (response) {
+                $("#resultado").html(response.m_StringValue);
+            },
+            error: function (jqXHR) {
+            },
+            complete: function (jqXHR, status) {
+            }
+        });
+    }
+
+</script>
